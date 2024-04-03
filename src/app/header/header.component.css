@@ -1,0 +1,7 @@
+.toolbar {
+  background: linear-gradient(90deg, #df64ec 12%, #00d4ff 100%);
+  padding: 0 !important;
+  .header-icon {
+    width: 100px;
+  }
+}

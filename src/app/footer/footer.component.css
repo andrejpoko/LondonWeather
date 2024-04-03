@@ -1,0 +1,12 @@
+.app-footer {
+  padding: 1rem 0;
+  background-color: #f8f9fa;
+  text-align: center;
+  position: relative;
+  bottom: 0;
+  width: 100%;
+
+  p {
+    margin: 0.5rem 0;
+  }
+}
