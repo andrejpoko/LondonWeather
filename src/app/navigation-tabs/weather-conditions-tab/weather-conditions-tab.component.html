@@ -1,3 +1,25 @@
-<p>
-  weather-conditions-tab works!
-</p>
+<mat-accordion>
+  <mat-expansion-panel
+    [expanded]="panelCurrentOpenState"
+    (closed)="panelCurrentOpenState = false"
+    (opened)="panelCurrentOpenState = true"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title> Current weather </mat-panel-title>
+      <mat-panel-description> Next seven days </mat-panel-description>
+    </mat-expansion-panel-header>
+    <app-weather-table [weatherData]="currentData"></app-weather-table>
+  </mat-expansion-panel>
+
+  <mat-expansion-panel
+    [expanded]="panelHistoricalOpenState"
+    (opened)="panelHistoricalOpenState = true"
+    (closed)="panelHistoricalOpenState = false"
+  >
+    <mat-expansion-panel-header>
+      <mat-panel-title> Historical weather </mat-panel-title>
+      <mat-panel-description> Past three days </mat-panel-description>
+    </mat-expansion-panel-header>
+    <app-weather-table [weatherData]="historicalData"></app-weather-table>
+  </mat-expansion-panel>
+</mat-accordion>

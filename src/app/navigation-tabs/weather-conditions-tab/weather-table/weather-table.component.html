@@ -1,0 +1,41 @@
+<div class="hourly-forecast mat-table-container">
+  <mat-table [dataSource]="weatherData" class="mat-elevation-z8" stickyHeader>
+    <ng-container matColumnDef="datetime">
+      <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.time | date : 'E, d MMM, y, HH:mm' }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="weatherState">
+      <mat-header-cell *matHeaderCellDef> Weather State </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.weather_description }}
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="temperature">
+      <mat-header-cell *matHeaderCellDef> Temperature </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.temperature_2m }}°C
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="surfacePressure">
+      <mat-header-cell *matHeaderCellDef> Surface Pressure </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.surface_pressure }}hPa
+      </mat-cell>
+    </ng-container>
+
+    <ng-container matColumnDef="relativeHumidity">
+      <mat-header-cell *matHeaderCellDef> Relative Humidity </mat-header-cell>
+      <mat-cell *matCellDef="let element">
+        {{ element.relative_humidity_2m }}%
+      </mat-cell>
+    </ng-container>
+
+    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
+    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
+  </mat-table>
+</div>
