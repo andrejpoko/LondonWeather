@@ -1,0 +1,30 @@
+.heat-index-form {
+  display: flex;
+  flex-direction: column;
+  gap: 8px;
+
+  .form-field-wrapper {
+    display: flex;
+    flex-direction: column;
+    gap: 16px;
+    input.ng-invalid.ng-touched {
+      border: 1px solid;
+    }
+
+    .example-full-width {
+      width: 30vw;
+    }
+
+    .temperature-too-low {
+      color: red;
+    }
+  }
+
+  .submit-btn {
+    width: fit-content;
+  }
+}
+
+.result {
+  margin: 4rem 0.5rem;
+}

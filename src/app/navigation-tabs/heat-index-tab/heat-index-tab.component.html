@@ -1,3 +1,60 @@
-<p>
-  heat-index-tab works!
-</p>
+<div class="heat-index-calculator">
+  <form
+    class="heat-index-form"
+    [formGroup]="heatIndexForm"
+    (ngSubmit)="calculateHeatIndex()"
+  >
+    <div>
+      <label>Temperature Units: </label>
+      <mat-radio-group formControlName="temperatureUnit">
+        <mat-radio-button value="C"> °C </mat-radio-button>
+        <mat-radio-button value="F"> °F </mat-radio-button>
+      </mat-radio-group>
+    </div>
+
+    <div class="form-field-wrapper">
+      <mat-form-field class="example-full-width">
+        <mat-label>
+          Temperature
+          <span *ngIf="heatIndexForm.get('temperatureUnit')?.value as unit">
+            (°{{ unit }})
+          </span>
+        </mat-label>
+        <input matInput formControlName="temperature" required/>
+        <mat-hint align="start">
+          Temperature must be over
+          <span *ngIf="heatIndexForm.get('temperatureUnit')?.value === 'C'">26.7°C</span>
+          <span *ngIf="heatIndexForm.get('temperatureUnit')?.value !== 'C'">80°F</span>
+        </mat-hint>
+        <mat-error *ngIf="heatIndexForm.get('temperature')?.errors">
+          Please enter valid temperature!
+        </mat-error>
+      </mat-form-field>
+
+      <mat-form-field class="example-full-width">
+        <mat-label>Relative Humidity (%)</mat-label>
+        <input matInput formControlName="humidity" required />
+        <mat-hint align="start">
+          <span>Enter positive value</span>
+        </mat-hint>
+        <mat-error *ngIf="heatIndexForm.get('humidity')?.errors">
+          Please enter valid temperature!
+        </mat-error>
+      </mat-form-field>
+    </div>
+    <button
+      class="submit-btn"
+      mat-flat-button
+      color="accent"
+      type="submit"
+      [disabled]="!heatIndexForm.valid"
+    >
+      Calculate
+    </button>
+  </form>
+
+  <div class="result">
+    Heat Index = <span *ngIf="heatIndex !== null; else na">{{ heatIndex }}°{{ resultUnit }}</span>
+  </div>
+  <ng-template #na>N/A</ng-template>
+</div>

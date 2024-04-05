@@ -18,6 +18,12 @@ import { HeatIndexTabComponent } from './navigation-tabs/heat-index-tab/heat-ind
 import { LineChartTabComponent } from './navigation-tabs/line-chart-tab/line-chart-tab.component';
 import { WeatherConditionsTabComponent } from './navigation-tabs/weather-conditions-tab/weather-conditions-tab.component';
 import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/weather-table/weather-table.component';
+import { ReactiveFormsModule } from '@angular/forms';
+import { MatInputModule } from '@angular/material/input';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatButtonModule } from '@angular/material/button';
+import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 
 @NgModule({
   declarations: [
@@ -39,8 +45,19 @@ import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/
     MatExpansionModule,
     HttpClientModule,
     CommonModule,
+    ReactiveFormsModule,
+    MatInputModule,
+    MatRadioModule,
+    MatButtonModule,
   ],
-  providers: [provideAnimationsAsync()],
+  providers: [
+    provideAnimationsAsync(),
+    {
+      provide: MAT_FORM_FIELD_DEFAULT_OPTIONS,
+      useValue: { appearance: 'outline' },
+    },
+    provideCharts(withDefaultRegisterables()),
+  ],
   bootstrap: [AppComponent],
 })
 export class AppModule {}

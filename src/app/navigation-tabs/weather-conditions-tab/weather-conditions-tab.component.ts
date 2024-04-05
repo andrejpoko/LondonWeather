@@ -40,8 +40,8 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
       .pipe(takeUntil(this.unsubscribe$))
       .subscribe({
         next: ([current, historical]) => {
-          this.currentData = current.hourly;
-          this.historicalData = historical.hourly;
+          this.currentData = current;
+          this.historicalData = historical;
         },
         error: (error) => {
           console.error('There was an error fetching the weather data:', error);

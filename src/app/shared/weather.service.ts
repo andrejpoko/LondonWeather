@@ -3,6 +3,7 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { weatherCodeMapping } from './wmo-mapping';
+import { OpenMeteoResponse } from '../models/weather.model';
 
 export enum LondonLocation {
   latitude = 51.5085,
@@ -22,8 +23,7 @@ export class WeatherService {
     longitude: number,
     forecastDays?: number,
     pastDays?: number
-  ): Observable<any> {
-    // TODO: Replace any with the correct type
+  ): Observable<OpenMeteoResponse[]> {
     let params: any = {
       latitude: latitude.toString(),
       longitude: longitude.toString(),
@@ -44,7 +44,7 @@ export class WeatherService {
     }
 
     return this.http
-      .get<any>(this.apiUrl, { params }) // TODO: Replace any with the correct type
+      .get<any>(this.apiUrl, { params })
       .pipe(
         map((response) => {
           const weatherCodes = response.hourly.weather_code || [];
@@ -52,15 +52,13 @@ export class WeatherService {
             (code: number) => weatherCodeMapping[code] || 'Unknown weather code'
           );
 
-          return {
-            hourly: response.hourly.time.map((time: string, index: number) => ({
-              time: new Date(time),
-              temperature_2m: response.hourly.temperature_2m[index],
-              weather_description: weatherDescriptions[index],
-              surface_pressure: response.hourly.surface_pressure[index],
-              relative_humidity_2m: response.hourly.relative_humidity_2m[index],
-            })),
-          };
+          return response.hourly.time.map((time: string, index: number) => ({
+            time: new Date(time),
+            temperature_2m: response.hourly.temperature_2m[index],
+            weather_description: weatherDescriptions[index],
+            surface_pressure: response.hourly.surface_pressure[index],
+            relative_humidity_2m: response.hourly.relative_humidity_2m[index],
+          }));
         })
       );
   }
