@@ -9,7 +9,7 @@ const routes: Routes = [
   { path: 'weather', component: WeatherConditionsTabComponent },
   { path: 'line-chart', component: LineChartTabComponent },
   { path: 'heat-index', component: HeatIndexTabComponent },
-  // { path: '**', redirectTo: '/weather' },
+  { path: '**', redirectTo: '/weather' },
 ];
 
 @NgModule({
