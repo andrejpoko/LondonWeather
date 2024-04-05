@@ -14,17 +14,18 @@
     .example-full-width {
       width: 30vw;
     }
-
-    .temperature-too-low {
-      color: red;
-    }
   }
 
   .submit-btn {
     width: fit-content;
+    margin: 2rem 0.5rem;
   }
 }
 
 .result {
-  margin: 4rem 0.5rem;
+  width: fit-content;
+  margin: 3rem 0.5rem;
+  border: 1px solid #ccc !important;
+  border-radius: 16px;
+  padding: 1.2em;
 }

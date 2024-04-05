@@ -1,3 +1,29 @@
-<p>
-  line-chart-tab works!
-</p>
+<div class="split-screen-container" *ngIf="(progressBarService.loading$ | async) === false">
+  <h1>Temperature Charts (hourly)</h1>
+  <div class="chart-section">
+    <h2>Next 7 Days</h2>
+    <div>
+      <canvas
+        baseChart
+        [data]="lineChartDataCurrent"
+        [options]="chartOptions"
+        [type]="'line'"
+      >
+      </canvas>
+    </div>
+  </div>
+
+  <div class="chart-section">
+    <h2>Past 3 Days</h2>
+    <div>
+      <canvas
+        baseChart
+        [data]="lineChartDataHistorical"
+        [options]="chartOptions"
+        [type]="'line'"
+        lineChartOptions
+      >
+      </canvas>
+    </div>
+  </div>
+</div>

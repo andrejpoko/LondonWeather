@@ -54,7 +54,7 @@
   </form>
 
   <div class="result">
-    Heat Index = <span *ngIf="heatIndex !== null; else na">{{ heatIndex }}°{{ resultUnit }}</span>
+    Heat Index = <span *ngIf="heatIndex !== null; else na">{{ heatIndex | number: '1.0-1' }}°{{ resultUnit }}</span>
   </div>
   <ng-template #na>N/A</ng-template>
 </div>

@@ -3,6 +3,11 @@
   overflow-y: auto;
 }
 
-mat-table {
+.table-wrapper {
   width: 100%;
+  .date {
+    white-space: nowrap;
+    overflow: hidden;
+    text-overflow: ellipsis;
+  }
 }

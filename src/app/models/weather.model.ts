@@ -5,3 +5,8 @@ export interface OpenMeteoResponse {
   surface_pressure: number;
   relative_humidity_2m: number;
 }
+
+export interface DataChart {
+  x: string;
+  y: number;
+}

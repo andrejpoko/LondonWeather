@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { ProgressBarService } from './shared/progress-bar.service';
 
 @Component({
   selector: 'app-root',
@@ -12,4 +13,5 @@ export class AppComponent {
     { label: 'Heat index', path: '/heat-index' },
   ];
   
+  constructor(public progressBarService: ProgressBarService) {}
 }

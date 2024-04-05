@@ -1,6 +1,7 @@
 import { Component, OnDestroy, OnInit } from '@angular/core';
-import { Subject, combineLatest, takeUntil } from 'rxjs';
+import { Subject, combineLatest, delay, takeUntil } from 'rxjs';
 import { OpenMeteoResponse } from '../../models/weather.model';
+import { ProgressBarService } from '../../shared/progress-bar.service';
 import { LondonLocation, WeatherService } from '../../shared/weather.service';
 
 @Component({
@@ -22,9 +23,16 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
   panelCurrentOpenState = true;
   panelHistoricalOpenState = false;
 
-  constructor(private weatherService: WeatherService) {}
+  constructor(
+    private weatherService: WeatherService,
+    private progressBarService: ProgressBarService
+  ) {}
 
   ngOnInit() {
+    setTimeout(() => {
+      this.progressBarService.show();
+    });
+
     const current$ = this.weatherService.fetchWeatherData(
       LondonLocation.latitude,
       LondonLocation.longitude
@@ -37,7 +45,7 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
     );
 
     combineLatest([current$, historical$])
-      .pipe(takeUntil(this.unsubscribe$))
+      .pipe(takeUntil(this.unsubscribe$), delay(150)) // Simulate delay
       .subscribe({
         next: ([current, historical]) => {
           this.currentData = current;
@@ -45,6 +53,10 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
         },
         error: (error) => {
           console.error('There was an error fetching the weather data:', error);
+          this.progressBarService.hide();
+        },
+        complete: () => {
+          this.progressBarService.hide();
         },
       });
   }

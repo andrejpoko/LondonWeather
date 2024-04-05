@@ -1,8 +1,8 @@
 <div class="hourly-forecast mat-table-container">
-  <mat-table [dataSource]="weatherData" class="mat-elevation-z8" stickyHeader>
+  <mat-table [dataSource]="weatherData" class="mat-elevation-z8 table-wrapper" stickyHeader>
     <ng-container matColumnDef="datetime">
       <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
-      <mat-cell *matCellDef="let element">
+      <mat-cell *matCellDef="let element" class="date">
         {{ element.time | date : 'E, d MMM, y, HH:mm' }}
       </mat-cell>
     </ng-container>
