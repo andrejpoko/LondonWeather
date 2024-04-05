@@ -1,6 +1,7 @@
 # LondonWeather
 
 London weather is simple weather application that consists of 3 views(tabs).
+I have used modular implementation.
 
 ## Features
 
