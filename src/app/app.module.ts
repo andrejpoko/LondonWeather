@@ -25,6 +25,8 @@ import { FooterComponent } from './footer/footer.component';
 import { HeatIndexTabComponent } from './navigation-tabs/heat-index-tab/heat-index-tab.component';
 import { WeatherConditionsTabComponent } from './navigation-tabs/weather-conditions-tab/weather-conditions-tab.component';
 import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/weather-table/weather-table.component';
+import { MatListModule } from '@angular/material/list';
+import { HeatIndexStorageComponent } from './navigation-tabs/heat-index-tab/heat-index-storage/heat-index-storage.component';
 
 @NgModule({
   declarations: [
@@ -34,6 +36,7 @@ import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/
     WeatherConditionsTabComponent,
     HeatIndexTabComponent,
     WeatherTableComponent,
+    HeatIndexStorageComponent
   ],
   imports: [
     BrowserModule,
@@ -51,6 +54,7 @@ import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/
     MatButtonModule,
     MatProgressBarModule,
     MatDividerModule,
+    MatListModule,
   ],
   providers: [
     provideCharts(withDefaultRegisterables()),

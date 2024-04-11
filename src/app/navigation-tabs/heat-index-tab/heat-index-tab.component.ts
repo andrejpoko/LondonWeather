@@ -7,6 +7,7 @@ import
     ValidationErrors,
     Validators,
   } from '@angular/forms';
+import { HeatIndexStorageService } from '../../shared/heat-index-storage.service';
 
 @Component({
   selector: 'app-heat-index-tab',
@@ -17,27 +18,30 @@ export class HeatIndexTabComponent implements OnInit {
   heatIndexForm: FormGroup;
   heatIndex: number | null = null;
   resultUnit: 'C' | 'F' | undefined;
+  heatIndexHistory: string[] = [];
+  lastResult?: string;
 
-  constructor(private fb: FormBuilder) {
+  constructor(private fb: FormBuilder,
+    private heatIndexStorageService: HeatIndexStorageService
+  ) {
     this.heatIndexForm = this.fb.group(
-      {
-        temperature: ['', [Validators.required, Validators.pattern('^[-]?[0-9]*$')]],
+      { temperature: ['', [Validators.required, Validators.pattern('^[-]?[0-9]*$')]],
         temperatureUnit: ['C'],
         humidity: ['', [Validators.required, Validators.pattern('^[0-9]*$')]],
-      },
-      { validators: this.temperatureValidator }
+      }, { validators: this.temperatureValidator }
     );
   }
 
-  ngOnInit() {}
+  ngOnInit() {
+    this.heatIndexHistory = this.heatIndexStorageService.loadStorage();
+  }
 
   calculateHeatIndex() {
     const formValue = this.heatIndexForm.value;
     let temperature = formValue.temperature;
     const humidity = formValue.humidity;
     const tempUnit = formValue.temperatureUnit;
-    let temperatureF =
-      tempUnit === 'C' ? this.convertCtoF(temperature) : temperature;
+    let temperatureF = tempUnit === 'C' ? this.convertCtoF(temperature) : temperature;
 
     if (temperatureF < 80 || humidity < 0) {
       this.heatIndex = null;
@@ -55,9 +59,13 @@ export class HeatIndexTabComponent implements OnInit {
       0.00085282 * temperatureF * humidity ** 2 -
       0.00000199 * temperatureF ** 2 * humidity ** 2;
 
-    this.heatIndex =
-      tempUnit === 'C' ? this.convertFtoC(heatIndexF) : heatIndexF;
+    this.heatIndex = tempUnit === 'C' ? this.convertFtoC(heatIndexF) : heatIndexF;
     this.resultUnit = tempUnit;
+
+    // Local storage
+    this.lastResult = `${this.heatIndex.toFixed(1)} °${this.resultUnit}`;
+    this.heatIndexStorageService.saveIndexToStorage(this.lastResult);
+    this.heatIndexHistory = this.heatIndexStorageService.loadStorage();
   }
 
   private convertCtoF(celsius: number): number {

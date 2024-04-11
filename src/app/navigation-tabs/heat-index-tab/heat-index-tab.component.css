@@ -29,3 +29,15 @@
   border-radius: 16px;
   padding: 1.2em;
 }
+
+.grid-container {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: 10px;
+}
+
+.grid-item {
+  background-color: #d3d3d324;
+  border-radius: 24px;
+  padding: 20px;
+}
