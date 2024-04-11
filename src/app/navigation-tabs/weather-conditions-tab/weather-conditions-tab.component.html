@@ -1,3 +1,11 @@
+<form class="past-days-form">
+  <mat-form-field class="past-days">
+    <mat-label>Past days</mat-label>
+    <input matInput color="primary" [formControl]="pastDays" placeholder="Enter number of days for historical view">
+    <mat-hint align="start"><strong>Enter a positive value</strong> </mat-hint>
+  </mat-form-field>
+</form>
+
 <mat-accordion>
   <mat-expansion-panel
     [expanded]="panelCurrentOpenState"
@@ -18,8 +26,12 @@
   >
     <mat-expansion-panel-header>
       <mat-panel-title> Historical weather </mat-panel-title>
-      <mat-panel-description> Past three days </mat-panel-description>
+      <mat-panel-description> Past {{hasPastDays(pastDays)}} day(s) </mat-panel-description>
     </mat-expansion-panel-header>
-    <app-weather-table [weatherData]="historicalData"></app-weather-table>
+    <app-weather-table *ngIf="historicalData && historicalData.length; else noData" [weatherData]="historicalData"></app-weather-table>
   </mat-expansion-panel>
 </mat-accordion>
+
+<ng-template #noData>
+  <p>No data, please enter valid number!</p>
+</ng-template>

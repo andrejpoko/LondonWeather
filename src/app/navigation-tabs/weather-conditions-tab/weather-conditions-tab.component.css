@@ -1,0 +1,14 @@
+.past-days-form {
+  min-width: 150px;
+  max-width: 500px;
+  width: 100%;
+  margin-bottom: 2rem;
+}
+
+.past-days {
+  width: 40vw;
+}
+
+p {
+  margin: 1rem 2rem;
+}

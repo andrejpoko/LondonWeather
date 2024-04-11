@@ -3,7 +3,7 @@ import { Component, OnDestroy, OnInit } from '@angular/core';
 import { ChartConfiguration } from 'chart.js';
 import 'chartjs-adapter-moment';
 import { BaseChartDirective } from 'ng2-charts';
-import { Subject, combineLatest, delay, takeUntil } from 'rxjs';
+import { Subject, delay, map, of, switchMap, takeUntil, tap } from 'rxjs';
 import { ProgressBarService } from '../../shared/progress-bar.service';
 import { LondonLocation, WeatherService } from '../../shared/weather.service';
 import { lineChartOptions } from './chart-config';
@@ -34,36 +34,66 @@ export class LineChartTabComponent implements OnInit, OnDestroy {
       },
     ],
   };
+  displayDays$ = this.weatherService.pastDays$.pipe(
+    map((days) => (days !== null && days > 0 ? days : 'N/A'))
+  );
 
   constructor(
-    private weatherService: WeatherService,
+    public weatherService: WeatherService,
     public progressBarService: ProgressBarService
   ) {}
 
   ngOnInit() {
-    setTimeout(() => {
-      this.progressBarService.show();
-    });
-    const curr$ = this.weatherService.fetchChartData(
-      LondonLocation.latitude,
-      LondonLocation.longitude
-    );
-    const history$ = this.weatherService.fetchChartData(
-      LondonLocation.latitude,
-      LondonLocation.longitude,
-      0,
-      3
-    );
-
-    combineLatest([curr$, history$])
-      .pipe(takeUntil(this.unsubscribe$), delay(150)) // Simulate delay
+    this.weatherService
+      .fetchChartData(LondonLocation.latitude, LondonLocation.longitude)
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        delay(150),
+        tap(() => this.progressBarService.show())
+      )
       .subscribe({
-        next: ([currentData, historicalData]) => {
+        next: (currentData) => {
           this.lineChartDataCurrent.datasets[0].data = currentData;
+        },
+        error: (error) => {
+          console.error(
+            'There was an error fetching the current line chart data:',
+            error
+          );
+          this.progressBarService.hide();
+        },
+        complete: () => {
+          this.progressBarService.hide();
+        },
+      });
+
+    this.weatherService.pastDays$
+      .pipe(
+        takeUntil(this.unsubscribe$),
+        delay(150),
+        tap(() => this.progressBarService.show()),
+        switchMap((days) => {
+          if (days) {
+            return this.weatherService.fetchChartData(
+              LondonLocation.latitude,
+              LondonLocation.longitude,
+              0,
+              days
+            );
+          } else {
+            return of([]);
+          }
+        })
+      )
+      .subscribe({
+        next: (historicalData) => {
           this.lineChartDataHistorical.datasets[0].data = historicalData;
         },
         error: (error) => {
-          console.error('There was an error fetching line chart data:', error);
+          console.error(
+            'There was an error fetching historical line chart data:',
+            error
+          );
           this.progressBarService.hide();
         },
         complete: () => {

@@ -1,6 +1,6 @@
 import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
-import { Observable } from 'rxjs';
+import { BehaviorSubject, Observable } from 'rxjs';
 import { map } from 'rxjs/operators';
 import { DataChart, OpenMeteoResponse } from '../models/weather.model';
 import { weatherCodeMapping } from './wmo-mapping';
@@ -15,6 +15,7 @@ export enum LondonLocation {
 })
 export class WeatherService {
   private _apiUrl = 'https://api.open-meteo.com/v1/forecast';
+  pastDays$ = new BehaviorSubject<number | null>(3);
 
   constructor(private http: HttpClient) {}
 

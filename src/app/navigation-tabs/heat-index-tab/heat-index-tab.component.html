@@ -35,10 +35,10 @@
         <mat-label>Relative Humidity (%)</mat-label>
         <input matInput formControlName="humidity" required />
         <mat-hint align="start">
-          <span>Enter positive value</span>
+          <span>Enter a positive value</span>
         </mat-hint>
         <mat-error *ngIf="heatIndexForm.get('humidity')?.errors">
-          Please enter valid temperature!
+          Please enter valid humidity!
         </mat-error>
       </mat-form-field>
     </div>
