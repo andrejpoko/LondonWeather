@@ -12,3 +12,8 @@
 mat-divider {
   margin: 1rem 0;
 }
+
+.info-icon {
+  color: rgba(0, 0, 0, 0.54);
+  cursor: help;
+}

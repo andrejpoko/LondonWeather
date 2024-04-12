@@ -29,6 +29,8 @@ import { HeatIndexStorageComponent } from './navigation-tabs/heat-index-tab/heat
 import { HeatIndexTabComponent } from './navigation-tabs/heat-index-tab/heat-index-tab.component';
 import { WeatherConditionsTabComponent } from './navigation-tabs/weather-conditions-tab/weather-conditions-tab.component';
 import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/weather-table/weather-table.component';
+import { MatTooltipModule } from '@angular/material/tooltip';
+import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -60,6 +62,8 @@ import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/
     MatFormFieldModule,
     MatSortModule,
     MatPaginatorModule,
+    MatIconModule,
+    MatTooltipModule,
   ],
   providers: [
     provideCharts(withDefaultRegisterables()),
