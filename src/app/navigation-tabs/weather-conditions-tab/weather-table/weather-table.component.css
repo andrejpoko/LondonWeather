@@ -1,13 +1,22 @@
 .mat-table-container {
-  max-height: 60vh;
+  max-height: auto;
   overflow-y: auto;
+  padding: 0.5rem;
 }
 
 .table-wrapper {
   width: 100%;
-  .date {
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-  }
+}
+
+.mat-mdc-form-field {
+  font-size: 14px;
+  width: 100%;
+}
+
+td,
+th {
+  width: 20%;
+  white-space: nowrap;
+  overflow: hidden;
+  text-overflow: ellipsis;
 }

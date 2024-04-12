@@ -1,4 +1,9 @@
-import { Component, OnDestroy, OnInit } from '@angular/core';
+import
+  {
+    Component,
+    OnDestroy,
+    OnInit
+  } from '@angular/core';
 import { FormControl, Validators } from '@angular/forms';
 import { Subject, delay, filter, take, takeUntil, tap } from 'rxjs';
 import { OpenMeteoResponse } from '../../models/weather.model';
@@ -14,15 +19,6 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();
   currentData: OpenMeteoResponse[] = [];
   historicalData: OpenMeteoResponse[] = [];
-  displayedColumns: string[] = [
-    'datetime',
-    'weatherState',
-    'temperature',
-    'surfacePressure',
-    'relativeHumidity',
-  ];
-  panelCurrentOpenState = true;
-  panelHistoricalOpenState = false;
   pastDays = new FormControl<number | null>(null, [
     Validators.required,
     Validators.pattern('^[-]?[0-9]*$'),
@@ -87,7 +83,7 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
         delay(150)
       )
       .subscribe({
-        next: (data) => {
+        next: (data: OpenMeteoResponse[]) => {
           this.currentData = data;
         },
         error: (error) => {

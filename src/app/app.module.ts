@@ -12,21 +12,23 @@ import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS } from '@angular/material/form-field';
+import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
 import { MatInputModule } from '@angular/material/input';
+import { MatListModule } from '@angular/material/list';
+import { MatPaginatorModule } from '@angular/material/paginator';
 import { MatProgressBarModule } from '@angular/material/progress-bar';
 import { MatRadioModule } from '@angular/material/radio';
+import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
 import { RouterModule } from '@angular/router';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { FooterComponent } from './footer/footer.component';
+import { HeatIndexStorageComponent } from './navigation-tabs/heat-index-tab/heat-index-storage/heat-index-storage.component';
 import { HeatIndexTabComponent } from './navigation-tabs/heat-index-tab/heat-index-tab.component';
 import { WeatherConditionsTabComponent } from './navigation-tabs/weather-conditions-tab/weather-conditions-tab.component';
 import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/weather-table/weather-table.component';
-import { MatListModule } from '@angular/material/list';
-import { HeatIndexStorageComponent } from './navigation-tabs/heat-index-tab/heat-index-storage/heat-index-storage.component';
 
 @NgModule({
   declarations: [
@@ -55,6 +57,9 @@ import { HeatIndexStorageComponent } from './navigation-tabs/heat-index-tab/heat
     MatProgressBarModule,
     MatDividerModule,
     MatListModule,
+    MatFormFieldModule,
+    MatSortModule,
+    MatPaginatorModule,
   ],
   providers: [
     provideCharts(withDefaultRegisterables()),

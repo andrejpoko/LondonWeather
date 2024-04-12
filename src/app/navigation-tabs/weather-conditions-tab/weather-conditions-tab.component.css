@@ -2,13 +2,13 @@
   min-width: 150px;
   max-width: 500px;
   width: 100%;
-  margin-bottom: 2rem;
+  padding: 0.5rem;
 }
 
 .past-days {
   width: 40vw;
 }
 
-p {
-  margin: 1rem 2rem;
+mat-divider {
+  margin: 1rem 0;
 }

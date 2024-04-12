@@ -1,5 +1,5 @@
 export interface OpenMeteoResponse {
-  time: Date;
+  time: string;
   weather_description: string;
   temperature_2m: number;
   surface_pressure: number;

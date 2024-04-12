@@ -1,41 +1,45 @@
 <div class="hourly-forecast mat-table-container">
-  <mat-table [dataSource]="weatherData" class="mat-elevation-z8 table-wrapper" stickyHeader>
-    <ng-container matColumnDef="datetime">
-      <mat-header-cell *matHeaderCellDef> Time </mat-header-cell>
-      <mat-cell *matCellDef="let element" class="date">
-        {{ element.time | date : 'E, d MMM, y, HH:mm' }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="weatherState">
-      <mat-header-cell *matHeaderCellDef> Weather State </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.weather_description }}
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="temperature">
-      <mat-header-cell *matHeaderCellDef> Temperature </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.temperature_2m }}°C
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="surfacePressure">
-      <mat-header-cell *matHeaderCellDef> Surface Pressure </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.surface_pressure }}hPa
-      </mat-cell>
-    </ng-container>
-
-    <ng-container matColumnDef="relativeHumidity">
-      <mat-header-cell *matHeaderCellDef> Relative Humidity </mat-header-cell>
-      <mat-cell *matCellDef="let element">
-        {{ element.relative_humidity_2m }}%
-      </mat-cell>
-    </ng-container>
-
-    <mat-header-row *matHeaderRowDef="displayedColumns"></mat-header-row>
-    <mat-row *matRowDef="let row; columns: displayedColumns"></mat-row>
-  </mat-table>
+  <mat-form-field>
+    <mat-label>Filter</mat-label>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Enter keyword" #input>
+  </mat-form-field>
+  
+  <div class="mat-elevation-z8">
+    <table mat-table [dataSource]="dataSource" matSort class="table-wrapper">
+  
+      <ng-container matColumnDef="datetime">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
+        <td mat-cell *matCellDef="let row" class="date table-data"> {{row.time | date : 'E, d MMM, y, HH:mm'}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="weatherState">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Weather State </th>
+        <td mat-cell *matCellDef="let row" class="table-data"> {{row.weather_description}} </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="temperature">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Temperature </th>
+        <td mat-cell *matCellDef="let row" class="table-data"> {{row.temperature_2m}}°C</td>
+      </ng-container>
+  
+      <ng-container matColumnDef="surfacePressure"> 
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Surface Pressure </th>
+        <td mat-cell *matCellDef="let row" class="table-data"> {{row.surface_pressure}}hPa </td>
+      </ng-container>
+  
+      <ng-container matColumnDef="relativeHumidity">
+        <th mat-header-cell *matHeaderCellDef mat-sort-header> Relative Humidity </th>
+        <td mat-cell *matCellDef="let row" class="table-data"> {{row.relative_humidity_2m}}% </td>
+      </ng-container>
+  
+      <tr mat-header-row *matHeaderRowDef="displayedColumns"></tr>
+      <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  
+      <tr class="mat-row" *matNoDataRow>
+        <td class="mat-cell no-data" colspan="5">No data matching the filter "{{input.value}}"</td>
+      </tr>
+    </table>
+  
+    <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
+  </div>
 </div>
