@@ -1,11 +1,16 @@
-import
-  {
-    Component,
-    OnDestroy,
-    OnInit
-  } from '@angular/core';
-import { FormControl, Validators } from '@angular/forms';
-import { Subject, delay, filter, take, takeUntil, tap } from 'rxjs';
+import { Component, OnDestroy, OnInit } from '@angular/core';
+import { FormControl, FormGroup } from '@angular/forms';
+import {
+  Subject,
+  combineLatest,
+  debounceTime,
+  delay,
+  of,
+  switchMap,
+  take,
+  takeUntil,
+  tap,
+} from 'rxjs';
 import { OpenMeteoResponse } from '../../models/weather.model';
 import { ProgressBarService } from '../../shared/progress-bar.service';
 import { LondonLocation, WeatherService } from '../../shared/weather.service';
@@ -19,10 +24,10 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
   private unsubscribe$: Subject<void> = new Subject();
   currentData: OpenMeteoResponse[] = [];
   historicalData: OpenMeteoResponse[] = [];
-  pastDays = new FormControl<number | null>(null, [
-    Validators.required,
-    Validators.pattern('^[-]?[0-9]*$'),
-  ]);
+  range = new FormGroup({
+    start: new FormControl<Date | null>(null),
+    end: new FormControl<Date | null>(null),
+  });
 
   constructor(
     private weatherService: WeatherService,
@@ -30,38 +35,33 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
   ) {}
 
   ngOnInit() {
-    this.pastDays.valueChanges
+    this.range.valueChanges
       .pipe(
         takeUntil(this.unsubscribe$),
-        tap((days) => {
-          tap(() => this.progressBarService.show());
-          if (days === null || isNaN(Number(days)) || Number(days) <= 0) {
-            this.historicalData = [];
-            this.progressBarService.hide();
-          }
-        }),
-        filter(
-          (days) => days !== null && !isNaN(Number(days)) && Number(days) > 0
-        )
-      )
-      .subscribe({
-        next: (days) => {
-          this.weatherService.pastDays$.next(days);
-          this.weatherService
-            .fetchWeatherData(
+        debounceTime(500),
+        tap(() => this.progressBarService.show()),
+        switchMap(({ start, end }) => {
+          if (start && end) {
+            this.weatherService.startDate$.next(start);
+            this.weatherService.endDate$.next(end);
+
+            return this.weatherService.fetchWeatherData(
               LondonLocation.latitude,
               LondonLocation.longitude,
-              0,
-              Number(days)
-            )
-            .subscribe((data) => {
-              this.historicalData = data;
-              this.progressBarService.hide();
-            });
+              start,
+              end
+            );
+          } else return of([]);
+        })
+      )
+      .subscribe({
+        next: (data: OpenMeteoResponse[]) => {
+          this.historicalData = data;
+          this.progressBarService.hide();
         },
         error: (error) => {
           console.error(
-            'There was an error fetching historical weather data:',
+            'There was an error fetching the historical weather data:',
             error
           );
           this.progressBarService.hide();
@@ -70,10 +70,6 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
           this.progressBarService.hide();
         },
       });
-
-    this.weatherService.pastDays$.pipe(take(1)).subscribe((val) => {
-      this.pastDays.setValue(val);
-    });
 
     this.weatherService
       .fetchWeatherData(LondonLocation.latitude, LondonLocation.longitude)
@@ -85,24 +81,30 @@ export class WeatherConditionsTabComponent implements OnInit, OnDestroy {
       .subscribe({
         next: (data: OpenMeteoResponse[]) => {
           this.currentData = data;
+          this.progressBarService.hide();
         },
         error: (error) => {
-          console.error(
-            'There was an error fetching the current weather data:',
-            error
-          );
+          console.error('There was an error fetching the weather data:', error);
           this.progressBarService.hide();
         },
         complete: () => {
           this.progressBarService.hide();
         },
       });
-  }
 
-  hasPastDays(val: FormControl): string {
-    if (val.value && val.value > 0 && !isNaN(Number(val.value))) {
-      return val.value.toString();
-    } else return 'N/A';
+    combineLatest([
+      this.weatherService.startDate$,
+      this.weatherService.endDate$,
+    ])
+      .pipe(take(1))
+      .subscribe(([startDate, endDate]) => {
+        if (startDate !== null) {
+          this.range.get('start')?.setValue(new Date(startDate));
+        }
+        if (endDate !== null) {
+          this.range.get('end')?.setValue(new Date(endDate));
+        }
+      });
   }
 
   ngOnDestroy(): void {

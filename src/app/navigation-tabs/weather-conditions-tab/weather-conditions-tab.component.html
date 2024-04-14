@@ -1,20 +1,33 @@
 <h2>Current weather (7 days)</h2>
-  <app-weather-table [weatherData]="currentData"></app-weather-table>
+<app-weather-table [weatherData]="currentData"></app-weather-table>
 
 <mat-divider></mat-divider>
 
 <h2>Historical weather</h2>
-<form class="past-days-form">
-  <mat-form-field class="past-days">
-    <mat-label>Past days</mat-label>
-    <input
-      matInput
-      color="primary"
-      [formControl]="pastDays"
-      placeholder="Enter number of days for historical view"
-    />
-    <mat-icon matSuffix matTooltip="Enter the number of past days you want to retrieve data for. For example, entering '3' retrieves weather data from the past three days. In Line Chart tab you will see Historical chart for a selected value." matTooltipPosition="right" class="info-icon">info_outline</mat-icon>
-    <mat-hint align="start"><strong>Enter a positive value</strong> </mat-hint>
-  </mat-form-field>
-</form>
+
+<mat-form-field class="date-range">
+  <mat-label>Enter a date range</mat-label>
+  <mat-date-range-input [formGroup]="range" [rangePicker]="picker">
+    <input matStartDate formControlName="start" placeholder="Start date" />
+    <input matEndDate formControlName="end" placeholder="End date" />
+  </mat-date-range-input>
+  <mat-hint>MM/DD/YYYY – MM/DD/YYYY</mat-hint>
+  <mat-datepicker-toggle matIconSuffix [for]="picker"></mat-datepicker-toggle>
+  <mat-date-range-picker #picker></mat-date-range-picker>
+
+  @if (range.controls.start.hasError('matStartDateInvalid')) {
+  <mat-error>Invalid start date</mat-error>
+  } @if (range.controls.end.hasError('matEndDateInvalid')) {
+  <mat-error>Invalid end date</mat-error>
+  }
+</mat-form-field>
+
+<mat-icon
+  matSuffix
+  matTooltip="Use the date picker to select a start and end date for the data range you want to analyze. After selecting the dates, the historical data for the specified range will be displayed in a table below and also graph on the 'Line chart' tab will be available. "
+  matTooltipPosition="right"
+  class="info-icon"
+  >info_outline</mat-icon
+>
+
 <app-weather-table [weatherData]="historicalData"></app-weather-table>

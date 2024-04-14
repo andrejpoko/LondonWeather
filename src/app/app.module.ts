@@ -10,9 +10,16 @@ import { CommonModule } from '@angular/common';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { MatButtonModule } from '@angular/material/button';
+import { MatNativeDateModule } from '@angular/material/core';
+import { MatDatepickerModule } from '@angular/material/datepicker';
 import { MatDividerModule } from '@angular/material/divider';
 import { MatExpansionModule } from '@angular/material/expansion';
-import { MAT_FORM_FIELD_DEFAULT_OPTIONS, MatFormFieldModule } from '@angular/material/form-field';
+import
+  {
+    MAT_FORM_FIELD_DEFAULT_OPTIONS,
+    MatFormFieldModule,
+  } from '@angular/material/form-field';
+import { MatIconModule } from '@angular/material/icon';
 import { MatInputModule } from '@angular/material/input';
 import { MatListModule } from '@angular/material/list';
 import { MatPaginatorModule } from '@angular/material/paginator';
@@ -22,6 +29,7 @@ import { MatSortModule } from '@angular/material/sort';
 import { MatTableModule } from '@angular/material/table';
 import { MatTabsModule } from '@angular/material/tabs';
 import { MatToolbarModule } from '@angular/material/toolbar';
+import { MatTooltipModule } from '@angular/material/tooltip';
 import { RouterModule } from '@angular/router';
 import { provideCharts, withDefaultRegisterables } from 'ng2-charts';
 import { FooterComponent } from './footer/footer.component';
@@ -29,8 +37,6 @@ import { HeatIndexStorageComponent } from './navigation-tabs/heat-index-tab/heat
 import { HeatIndexTabComponent } from './navigation-tabs/heat-index-tab/heat-index-tab.component';
 import { WeatherConditionsTabComponent } from './navigation-tabs/weather-conditions-tab/weather-conditions-tab.component';
 import { WeatherTableComponent } from './navigation-tabs/weather-conditions-tab/weather-table/weather-table.component';
-import { MatTooltipModule } from '@angular/material/tooltip';
-import { MatIconModule } from '@angular/material/icon';
 
 @NgModule({
   declarations: [
@@ -40,7 +46,7 @@ import { MatIconModule } from '@angular/material/icon';
     WeatherConditionsTabComponent,
     HeatIndexTabComponent,
     WeatherTableComponent,
-    HeatIndexStorageComponent
+    HeatIndexStorageComponent,
   ],
   imports: [
     BrowserModule,
@@ -64,6 +70,8 @@ import { MatIconModule } from '@angular/material/icon';
     MatPaginatorModule,
     MatIconModule,
     MatTooltipModule,
+    MatDatepickerModule,
+    MatNativeDateModule
   ],
   providers: [
     provideCharts(withDefaultRegisterables()),

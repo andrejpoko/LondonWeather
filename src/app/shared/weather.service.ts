@@ -15,15 +15,16 @@ export enum LondonLocation {
 })
 export class WeatherService {
   private _apiUrl = 'https://api.open-meteo.com/v1/forecast';
-  pastDays$ = new BehaviorSubject<number | null>(3);
+  startDate$ = new BehaviorSubject<Date | null>(null);
+  endDate$ = new BehaviorSubject<Date | null>(null);
 
   constructor(private http: HttpClient) {}
 
   fetchWeatherData(
     latitude: number,
     longitude: number,
-    forecastDays?: number,
-    pastDays?: number
+    startDate?: Date,
+    endDate?: Date
   ): Observable<OpenMeteoResponse[]> {
     let params: any = {
       latitude: latitude.toString(),
@@ -36,12 +37,12 @@ export class WeatherService {
       ].join(),
     };
 
-    if (pastDays !== undefined) {
-      params.past_days = pastDays;
+    if (startDate !== undefined) {
+      params.start_date = this.formatDate(startDate);
     }
 
-    if (forecastDays !== undefined) {
-      params.forecast_days = forecastDays;
+    if (endDate !== undefined) {
+      params.end_date = this.formatDate(endDate);
     }
 
     return this.http.get<any>(this._apiUrl, { params }).pipe(
@@ -65,8 +66,8 @@ export class WeatherService {
   fetchChartData(
     latitude: number,
     longitude: number,
-    forecastDays?: number,
-    pastDays?: number
+    startDate?: Date,
+    endDate?: Date
   ): Observable<DataChart[]> {
     let params: any = {
       latitude: latitude.toString(),
@@ -79,12 +80,12 @@ export class WeatherService {
       ].join(),
     };
 
-    if (pastDays !== undefined) {
-      params.past_days = pastDays;
+    if (startDate !== undefined) {
+      params.start_date = this.formatDate(startDate);
     }
 
-    if (forecastDays !== undefined) {
-      params.forecast_days = forecastDays;
+    if (endDate !== undefined) {
+      params.end_date = this.formatDate(endDate);
     }
 
     return this.http.get<any>(this._apiUrl, { params }).pipe(
@@ -99,5 +100,10 @@ export class WeatherService {
         return data;
       })
     );
+  }
+
+  // Format date for Weather API header params
+  formatDate(date: Date): string {
+    return date.toISOString().split('T')[0];
   }
 }

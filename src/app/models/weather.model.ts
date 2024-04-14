@@ -10,3 +10,12 @@ export interface DataChart {
   x: string;
   y: number;
 }
+
+export interface ChartJsData {
+  datasets: [
+    {
+      data: DataChart[];
+      label: string;
+    }
+  ];
+}

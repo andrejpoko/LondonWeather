@@ -10,3 +10,17 @@
   padding: 20px;
   box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
 }
+
+.chart-no-data {
+  display: flex;
+  align-items: center;
+  margin: 72px 20px 20px 20px;
+  padding: 20px;
+  font-size: 20px;
+
+}
+
+.chart-no-data .warning-icon {
+  margin: 0 8px;
+  font-size: 24px;
+}

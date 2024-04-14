@@ -20,3 +20,7 @@ th {
   overflow: hidden;
   text-overflow: ellipsis;
 }
+
+.no-data {
+  padding: 24px !important;
+}

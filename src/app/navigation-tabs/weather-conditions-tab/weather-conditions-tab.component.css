@@ -1,16 +1,9 @@
-.past-days-form {
-  min-width: 150px;
-  max-width: 500px;
-  width: 100%;
-  padding: 0.5rem;
-}
-
-.past-days {
-  width: 40vw;
+.date-range {
+  padding: 0.5rem !important;
 }
 
 mat-divider {
-  margin: 1rem 0;
+  margin: 2rem 0;
 }
 
 .info-icon {

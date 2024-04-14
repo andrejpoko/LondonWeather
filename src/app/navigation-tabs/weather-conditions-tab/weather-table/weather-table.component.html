@@ -1,11 +1,11 @@
 <div class="hourly-forecast mat-table-container">
   <mat-form-field>
     <mat-label>Filter</mat-label>
-    <input matInput (keyup)="applyFilter($event)" placeholder="Enter keyword" #input>
+    <input matInput (keyup)="applyFilter($event)" placeholder="Enter keyword" #input [disabled]="!weatherData.length">
   </mat-form-field>
   
   <div class="mat-elevation-z8">
-    <table mat-table [dataSource]="dataSource" matSort class="table-wrapper">
+    <table mat-table [dataSource]="dataSource" matSort class="table-wrapper" *ngIf="weatherData.length; else rangeNotSelected">
   
       <ng-container matColumnDef="datetime">
         <th mat-header-cell *matHeaderCellDef mat-sort-header> Date </th>
@@ -43,3 +43,7 @@
     <mat-paginator [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Select page of users"></mat-paginator>
   </div>
 </div>
+
+<ng-template #rangeNotSelected>
+  <p class="no-data">Please select a date range!</p>
+</ng-template>

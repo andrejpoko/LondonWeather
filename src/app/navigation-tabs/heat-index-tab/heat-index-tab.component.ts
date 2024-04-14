@@ -7,6 +7,7 @@ import
     ValidationErrors,
     Validators,
   } from '@angular/forms';
+import { Subject, distinctUntilChanged, takeUntil } from 'rxjs';
 import { HeatIndexStorageService } from '../../shared/heat-index-storage.service';
 
 @Component({
@@ -20,6 +21,7 @@ export class HeatIndexTabComponent implements OnInit {
   resultUnit: 'C' | 'F' | undefined;
   heatIndexHistory: string[] = [];
   lastResult?: string;
+  private unsubscribe$: Subject<void> = new Subject();
 
   constructor(private fb: FormBuilder,
     private heatIndexStorageService: HeatIndexStorageService
@@ -34,6 +36,14 @@ export class HeatIndexTabComponent implements OnInit {
 
   ngOnInit() {
     this.heatIndexHistory = this.heatIndexStorageService.loadStorage();
+
+    this.heatIndexForm.get('temperature')?.valueChanges.pipe(
+      distinctUntilChanged(),
+      takeUntil(this.unsubscribe$)
+    ).subscribe(() => {
+      this.heatIndexForm.get('temperature')?.updateValueAndValidity();
+    })
+
   }
 
   calculateHeatIndex() {
